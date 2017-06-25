@@ -3,8 +3,16 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 function Square(props) {
+  let cssClass = 'square';
+  if (props.isCurrentSquare) {
+    cssClass += ' bold';
+  }
+  if (props.inWinningRow) {
+    cssClass += ' green';
+  }
+
   return (
-    <button className={(props.isCurrentSquare) ? 'square bold' : 'square'} onClick={() => props.onClick()}>
+    <button className={cssClass} onClick={() => props.onClick()}>
       {props.value}
     </button>
   );
@@ -13,10 +21,12 @@ function Square(props) {
 class Board extends React.Component {
   renderSquare(i) {
     const isCurrentSquare = (i === this.props.currentSquare) ? true : false;
+    const inWinningRow = (this.props.winningRow.includes(i) ? true : false);
     return (
       <Square
         value={this.props.squares[i]}
         isCurrentSquare={isCurrentSquare}
+        inWinningRow={inWinningRow}
         onClick={() => this.props.onClick(i)}
       />
     );
@@ -138,6 +148,7 @@ class Game extends React.Component {
           <Board 
             squares={current.squares}
             currentSquare = {current.lastMove}
+            winningRow = {winningRow}
             onClick={(i) => this.handleClick(i)}
           />
         </div>
@@ -182,5 +193,8 @@ function calculateWinner(squares) {
       };
     }
   }
-  return { winner: null };
+  return {
+    winner: null,
+    winningRow: [],
+  };
 }
