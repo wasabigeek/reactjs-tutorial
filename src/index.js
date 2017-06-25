@@ -59,6 +59,7 @@ class Game extends React.Component {
         squares: Array(9).fill(null),
         lastMove: null,
       }],
+      sortHistoryInDescendingOrder: true,
       stepNumber: 0,
       xIsNext: true,
     }
@@ -89,6 +90,12 @@ class Game extends React.Component {
     });
   }
 
+  toggleSortOrder() {
+    this.setState({
+      sortHistoryInDescendingOrder: !this.state.sortHistoryInDescendingOrder,
+    });
+  }
+
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
@@ -105,6 +112,11 @@ class Game extends React.Component {
         </li>
       );
     });
+    const sortedMoves = (this.state.sortHistoryInDescendingOrder) ? moves : moves.reverse();
+
+    const sortToggle = <a href="#" onClick={() => this.toggleSortOrder()}>
+      {(this.state.sortHistoryInDescendingOrder) ? 'descending' : 'ascending'}
+    </a>;
 
     let status;
     if (winner) {
@@ -125,6 +137,7 @@ class Game extends React.Component {
         <div className="game-info">
           <div>{status}</div>
           <ol>{moves}</ol>
+          <div>Sorted in {sortToggle} order</div>
         </div>
       </div>
     );
