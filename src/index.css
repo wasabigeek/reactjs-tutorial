@@ -51,3 +51,7 @@ ol, ul {
 .game-info {
   margin-left: 20px;
 }
+
+a.bold {
+  font-weight: 700;
+}
